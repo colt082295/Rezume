@@ -10,6 +10,14 @@ import configureStore from './store/configureStore';
 import history from './history';
 import { updateMeta } from './DOMUtils';
 import router from './router';
+// import openSocket from 'socket.io-client';
+// const socket = openSocket('http://localhost:4001');
+
+// // function subscribeToConsole(cb) {
+// //   socket.on('message', message => console.log(message));
+// //   // socket.emit('subscribeToTimer', 1000);
+// // }
+// socket.on('console', message => console.log(message));
 
 // Global (context) variables that can be easily accessed from any React component
 // https://facebook.github.io/react/docs/context.html
@@ -158,3 +166,5 @@ if (module.hot) {
     onLocationChange(currentLocation);
   });
 }
+
+// export default socket;

@@ -1,4 +1,5 @@
 import path from 'path';
+import http from 'http';
 import express from 'express';
 import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
@@ -23,9 +24,31 @@ import assets from './assets.json'; // eslint-disable-line import/no-unresolved
 import configureStore from './store/configureStore';
 import { setRuntimeVariable } from './actions/runtime';
 import config from './config';
-
+import socketIO from 'socket.io';
 const app = express();
 
+const ioPort = 4001;
+
+const socketApp = express()
+
+// our server instance
+const server = http.createServer(socketApp)
+
+// This creates our socket using the instance of the server
+const io = socketIO(server)
+
+// This is what the socket.io syntax is like, we will work this later
+io.on('connection', socket => {
+  console.log('User connected');
+  socket.emit('console', "User connected!");
+  // socket.on('console', message => console.log(message));
+  
+  socket.on('disconnect', () => {
+    console.log('user disconnected')
+  })
+})
+
+server.listen(ioPort, () => console.log(`Listening on port ${ioPort}`))
 //
 // If you are using proxy from external machine, you can set TRUST_PROXY env
 // Default is to trust proxy headers only from loopback interface.
@@ -219,6 +242,7 @@ if (!module.hot) {
     });
   });
 }
+
 
 //
 // Hot Module Replacement

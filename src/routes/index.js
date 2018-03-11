@@ -1,5 +1,7 @@
 /* eslint-disable global-require */
-
+import React from 'react';
+import Layout from '../components/Layout';
+import Media from '../../server/Media/Media';
 // The top-level (parent) route
 const routes = {
   path: '',
@@ -23,6 +25,41 @@ const routes = {
     {
       path: '/admin',
       load: () => import(/* webpackChunkName: 'admin' */ './admin'),
+    },
+    {
+      path: '/test',
+      load: () => import(/* webpackChunkName: 'admin' */ './test'),
+    },
+    {
+      path: '/add-content/:path',
+      action({ params }) {
+        let loc = decodeURI(params.path);
+        console.log(loc);
+        Media(loc);
+        // I have to figure out some way to make the call to run the function, and be able to get info even when it's only running on the server.
+        // How I'll do this is websockets/socket.io/pusher. Basically I make that connection and I can send data between the client and server.
+        // Media(loc).then(console.log("Done 2!"));
+
+
+      //   async function getIt(loc) {
+      //     await new Promise(
+      //       (resolve, reject) => {
+  
+      //         if (!process.env.BROWSER) {
+      //           Media(loc).then(() => {
+      //             resolve();
+      //           })
+      //       }
+      //   })
+      // }
+
+        return {
+          title: 'Adding Media',
+          component: (
+            <Layout></Layout>
+          ),
+        };
+      }
     },
 
     // Wildcard routes, e.g. { path: '(.*)', ... } (must go last)
